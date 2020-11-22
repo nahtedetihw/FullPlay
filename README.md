@@ -9,7 +9,8 @@ This tweak was originally done by althiometer, please give em a follow on Twitte
 This version compared to alts:
 * Fixed artwork glitch
 
-Follow Me
+
+### Follow Me
 
 https://twitter.com/ethanwhited - follow me for more up to date info, or ask me anything.
 
