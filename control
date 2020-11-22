@@ -2,6 +2,7 @@ Package: com.nahtedetihw.fullplay
 Name: FullPlay
 Version: 1.4
 Architecture: iphoneos-arm
+Conflicts: althiometer.fullplay
 Description: An awesome MobileSubstrate tweak!
 Maintainer: Ethan Whited
 Author: Ethan Whited
