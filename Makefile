@@ -1,5 +1,4 @@
 TARGET := iphone:clang:latest:7.0
-INSTALL_TARGET_PROCESSES = Music
 
 DEBUG = 0
 FINALPACKAGE = 1
@@ -10,12 +9,15 @@ include $(THEOS)/makefiles/common.mk
 before-stage::
 	find . -name ".DS\_Store" -delete
 
-after-install::
-	install.exec "sbreload"
-
 TWEAK_NAME = FullPlay
 
 FullPlay_FILES = Tweak.xm
 FullPlay_CFLAGS = -fobjc-arc
+FullPlay_EXTRA_FRAMEWORKS += Cephei
 
 include $(THEOS_MAKE_PATH)/tweak.mk
+
+after-install::
+	install.exec "killall -9 Music && killall -9 Preferences"
+SUBPROJECTS += fullplayprefs
+include $(THEOS_MAKE_PATH)/aggregate.mk
