@@ -1,6 +1,6 @@
 Package: com.nahtedetihw.fullplay
 Name: FullPlay
-Version: 1.5
+Version: 1.6
 Architecture: iphoneos-arm
 Conflicts: althiometer.fullplay
 Description: Make the Now Playing view in Apple Music Full Screen!

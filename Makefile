@@ -1,3 +1,4 @@
+ARCHS = arm64 arm64e
 TARGET := iphone:clang:latest:7.0
 
 DEBUG = 0
@@ -18,6 +19,7 @@ FullPlay_EXTRA_FRAMEWORKS += Cephei
 include $(THEOS_MAKE_PATH)/tweak.mk
 
 after-install::
-	install.exec "killall -9 Music && killall -9 Preferences"
+	install.exec "killall -9 Music && killall -9 Preferences && killall -9 Podcasts"
 SUBPROJECTS += fullplayprefs
+SUBPROJECTS += fullplaypodcasts
 include $(THEOS_MAKE_PATH)/aggregate.mk

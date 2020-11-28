@@ -147,3 +147,30 @@
     return [UIColor clearColor];
 }
 @end
+
+@implementation OtherListController
+
+- (NSArray *)specifiers {
+
+    if (!_specifiers) {
+
+        _specifiers = [[self loadSpecifiersFromPlistName:@"Other" target:self] retain];
+
+    }
+
+    return _specifiers;
+
+}
+
+- (void)killPodcasts {
+
+    AudioServicesPlaySystemSound(1521);
+
+    pid_t pid;
+    const char* args[] = {"killall", "Podcasts", NULL};
+    posix_spawn(&pid, "/usr/bin/killall", NULL, NULL, (char* const*)args, NULL);
+
+}
+
+@end
+

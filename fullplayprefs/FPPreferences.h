@@ -4,6 +4,9 @@
 #import <CepheiPrefs/HBAppearanceSettings.h>
 #import <spawn.h>
 
+@interface OtherListController: HBRootListController
+@end
+
 @interface FPPreferencesListController : HBRootListController {
 
     UITableView * _table;

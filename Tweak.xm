@@ -6,6 +6,11 @@ HBPreferences *preferences;
 BOOL enable;
 double offsetValue;
 BOOL enableControlsVibration;
+BOOL removeGrabber;
+
+@interface MusicNowPlayingControlsViewController : UIViewController
+@property (nonatomic, strong) UIButton *dismissButton;
+@end
 
 %group FullPlay
 
@@ -22,8 +27,10 @@ BOOL enableControlsVibration;
         [gestureRecognizerDown setDirection:(UISwipeGestureRecognizerDirectionDown)];
         [self.view addGestureRecognizer:gestureRecognizerDown];
         
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+        tapGesture.numberOfTapsRequired = 2;
+        [self.view addGestureRecognizer:tapGesture];
     }
-    
     %orig;
 }
 
@@ -35,6 +42,23 @@ BOOL enableControlsVibration;
     }
 }
 
+%new
+-(void)handleTapGesture:(id)sender {
+    if ([NSStringFromClass([((UIViewController *)self) class])isEqualToString:@"MusicApplication.NowPlayingViewController"] || [NSStringFromClass([((UIViewController *)self) class])isEqualToString:@"Music.NowPlayingViewController"]) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+%end
+
+// Remove now player grabber iOS 13
+%hook MusicNowPlayingControlsViewController
+- (void)viewDidLayoutSubviews {
+    %orig;
+    if (removeGrabber) {
+        UIView *grabber = MSHookIvar<UIView *>(self, "grabberView");
+        grabber.hidden = YES;
+    }
+}
 %end
 
 // add custom vibrations to the Music Controls
@@ -74,17 +98,25 @@ BOOL enableControlsVibration;
 }
 
 %end
+
+// Remove iOS 12 chevron
+%hook MusicNowPlayingChevronView
+-(void)layoutSubviews {
+    [((UIView *)self) removeFromSuperview];
+}
+%end
 %end
 
 %ctor {
 
     preferences = [[HBPreferences alloc] initWithIdentifier:@"com.nahtedetihw.fullplayprefs"];
-    [preferences registerBool:&enable default:YES forKey:@"enable"];
+    [preferences registerBool:&enable default:NO forKey:@"enable"];
     [preferences registerDouble:&offsetValue default:44 forKey:@"offsetValue"];
-    [preferences registerBool:&enableControlsVibration default:YES forKey:@"enableControlsVibration"];
+    [preferences registerBool:&enableControlsVibration default:NO forKey:@"enableControlsVibration"];
+    [preferences registerBool:&removeGrabber default:NO forKey:@"removeGrabber"];
 
     if (enable) {
-        %init(FullPlay);
+        %init(FullPlay, MusicNowPlayingChevronView = NSClassFromString(@"Music.NowPlayingChevronView"));
         return;
     }
     return;
